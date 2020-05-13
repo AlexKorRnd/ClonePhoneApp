@@ -51,16 +51,9 @@ class WiFiDirectBroadcastReceiver(
             WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION -> {
                 // Determine if Wifi P2P mode is enabled or not, alert
                 // the Activity.
-                val state = intent.getIntExtra(WifiP2pManager.EXTRA_WIFI_STATE, -1)
-                val isWifiP2pEnabled = state == WifiP2pManager.WIFI_P2P_STATE_ENABLED
-                Timber.i("state = $state, isWifiP2pEnabled = $isWifiP2pEnabled")
-               // manager.requestPeers(channel, peerListListener)
             }
             WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION -> {
 
-                // The peer list has changed! We should probably do something about
-                // that.
-                manager.requestPeers(channel, peerListListener)
             }
             WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION -> {
 

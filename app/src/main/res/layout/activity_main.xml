@@ -11,12 +11,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="show QR code"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:stateListAnimator="@null" />
 
     <FrameLayout
         android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:elevation="2dp"/>
+        android:layout_height="match_parent" />
 
 </FrameLayout>

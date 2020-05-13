@@ -1,7 +1,9 @@
 package ru.alexkorrnd.cloneapp
 
 import android.app.Application
-import ru.alexkorrnd.cloneapp.di.Injection
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
+import ru.alexkorrnd.cloneapp.di.modulesList
 import timber.log.Timber
 
 class CloneApp : Application() {
@@ -9,7 +11,14 @@ class CloneApp : Application() {
     override fun onCreate() {
         super.onCreate()
         Timber.plant(Timber.DebugTree())
-        Injection.context = this
+        initKoin()
+    }
+
+    private fun initKoin() {
+        startKoin {
+            androidContext(this@CloneApp)
+            modules(modulesList)
+        }
     }
 
 }

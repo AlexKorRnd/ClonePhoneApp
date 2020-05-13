@@ -8,7 +8,7 @@ import android.os.Bundle
 import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import ru.alexkorrnd.cloneapp.di.Injection
+import org.koin.android.ext.android.getKoin
 import ru.alexkorrnd.cloneapp.generatingqrcode.ShowQrCodeFragment
 import ru.alexkorrnd.cloneapp.wifi.WiFiDirectBroadcastReceiver
 import timber.log.Timber
@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
             this,
             manager,
             channel,
-            Injection.provideWifiInteractor()
+            getKoin().get()
         )
         registerReceiver(receiver, intentFilter)
 

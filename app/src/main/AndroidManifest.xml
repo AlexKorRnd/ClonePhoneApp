@@ -14,7 +14,6 @@
     <uses-permission
         android:required="true"
         android:name="android.permission.INTERNET"/>
-    <uses-feature android:name="android.software.companion_device_setup"/>
 
     <application
         android:allowBackup="true"

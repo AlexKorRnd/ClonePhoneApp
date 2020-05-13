@@ -14,6 +14,7 @@ class ShowQrCodePresenter(
 ) {
 
     fun loadQrCode() {
+        Timber.i("view = $view")
         try {
             val wiFiDeviceInfo = wifiDeviceInfoLoader.load()!!
             val infoAsString = converter.toString(wiFiDeviceInfo)
