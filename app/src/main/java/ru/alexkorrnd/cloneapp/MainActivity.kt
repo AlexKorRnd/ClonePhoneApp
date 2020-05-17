@@ -6,13 +6,15 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.inject
+import org.koin.core.qualifier.named
 import ru.alexkorrnd.cloneapp.client.readingqrcode.ReadingQRCodeFragment
+import ru.alexkorrnd.cloneapp.di.WIFI_BROADCAST_RECEIVER_INTENT_FILTER_QUALIFIER
 import ru.alexkorrnd.cloneapp.generatingqrcode.ShowQrCodeFragment
 import ru.alexkorrnd.cloneapp.wifi.WiFiDirectBroadcastReceiver
 
 class MainActivity : AppCompatActivity() {
 
-    val intentFilter : IntentFilter by inject()
+    val intentFilter : IntentFilter by inject(named(WIFI_BROADCAST_RECEIVER_INTENT_FILTER_QUALIFIER))
 
     val receiver: WiFiDirectBroadcastReceiver by inject()
 

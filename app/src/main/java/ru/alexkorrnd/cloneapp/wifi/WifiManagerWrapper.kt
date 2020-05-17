@@ -9,8 +9,8 @@ class WifiManagerWrapper(
     private val context: Context
 ) {
 
-    private val manager by lazy { ContextCompat.getSystemService<WifiP2pManager>(context, WifiP2pManager::class.java)!! }
+    val manager by lazy { ContextCompat.getSystemService<WifiP2pManager>(context, WifiP2pManager::class.java)!! }
 
-    private val channel by lazy { manager.initialize(context, Looper.getMainLooper(), null) }
+    val channel by lazy { manager.initialize(context, Looper.getMainLooper(), null) }
 
 }
