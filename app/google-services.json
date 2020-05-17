@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "137883259577",
+    "firebase_url": "https://cameraapp-e5e8a.firebaseio.com",
+    "project_id": "cameraapp-e5e8a",
+    "storage_bucket": "cameraapp-e5e8a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:137883259577:android:e44a23ae916f0b01de8168",
+        "android_client_info": {
+          "package_name": "cup.vk.alexkorrnd.camera"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "137883259577-0vop8rspniqj9drecs69hac5uhv955aq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCLO7JqB8d8InRhG26hcLL6H28hwXsSmis"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "137883259577-0vop8rspniqj9drecs69hac5uhv955aq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:137883259577:android:39fe09363140afe3de8168",
+        "android_client_info": {
+          "package_name": "ru.alexkorrnd.cloneapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "137883259577-0vop8rspniqj9drecs69hac5uhv955aq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCLO7JqB8d8InRhG26hcLL6H28hwXsSmis"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "137883259577-0vop8rspniqj9drecs69hac5uhv955aq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

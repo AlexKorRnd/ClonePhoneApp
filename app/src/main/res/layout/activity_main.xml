@@ -6,13 +6,30 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/showQrCode"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="show QR code"
-        android:layout_gravity="center"
-        android:stateListAnimator="@null" />
+        android:orientation="vertical"
+        android:layout_gravity="center">
+
+        <Button
+            android:id="@+id/showQrCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Показать QR код"
+            android:layout_gravity="center"
+            android:stateListAnimator="@null" />
+
+        <Button
+            android:id="@+id/readQrCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Прочитать QR код"
+            android:layout_gravity="center"
+            android:stateListAnimator="@null" />
+
+
+    </LinearLayout>
 
     <FrameLayout
         android:id="@+id/fragmentContainer"

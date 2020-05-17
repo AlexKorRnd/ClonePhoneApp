@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.getKoin
 import ru.alexkorrnd.cloneapp.generatingqrcode.ShowQrCodeFragment
+import ru.alexkorrnd.cloneapp.readingqrcode.ReadingQRCodeFragment
 import ru.alexkorrnd.cloneapp.wifi.WiFiDirectBroadcastReceiver
 import timber.log.Timber
 
@@ -51,6 +52,11 @@ class MainActivity : AppCompatActivity() {
         showQrCode.setOnClickListener {
             supportFragmentManager.beginTransaction()
                 .add(R.id.fragmentContainer, ShowQrCodeFragment.newInstance(), null)
+                .commit()
+        }
+        readQrCode.setOnClickListener {
+            supportFragmentManager.beginTransaction()
+                .add(R.id.fragmentContainer, ReadingQRCodeFragment.newInstance(), null)
                 .commit()
         }
     }
