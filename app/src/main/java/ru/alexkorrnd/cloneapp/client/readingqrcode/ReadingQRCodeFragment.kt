@@ -12,15 +12,15 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode
 import kotlinx.android.synthetic.main.fragment_reading_qr_code.*
+import org.koin.android.ext.android.inject
 import ru.alexkorrnd.cloneapp.R
-import java.util.concurrent.Executor
-import java.util.concurrent.Executors
+import ru.alexkorrnd.cloneapp.client.readingqrcode.view.QrReaderCallback
+import timber.log.Timber
 
-class ReadingQRCodeFragment: Fragment() {
+class ReadingQRCodeFragment: Fragment(), QrReaderCallback {
 
-    private lateinit var cameraPreviewHelper: CameraPreviewHelper
-    private lateinit var qrCodeImageAnalysis: QrCodeImageAnalysis
-    private lateinit var mainCameraExecutor: Executor
+    val cameraPreviewHelper: CameraPreviewHelper by inject()
+    val qrCodeAnalyzer: QrCodeAnalyzer by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,44 +33,31 @@ class ReadingQRCodeFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mainCameraExecutor = Executors.newSingleThreadExecutor()
-
-        cameraPreviewHelper = CameraPreviewHelper(
-            lifecycleOwner = this,
-            previewView = viewFinder,
-            overlayView = imageView,
-            qrCodeCallback = object : QrCodeImageAnalysis.QrReaderCallback {
-                override fun onQrCodeFounded(barcode: FirebaseVisionBarcode) {
-
-                }
-
-                override fun onQrCodeNotFounded() {
-
-                }
-
-                override fun onQrCodeError(error: Exception) {
-
-                }
-            }
-        )
-        qrCodeImageAnalysis = QrCodeImageAnalysis()
-        qrCodeImageAnalysis.rectangleAreaHighliteHelper = RectangleAreaHighliteHelper(imageView)
-
         if (isCameraPermissionGranted()) {
-            viewFinder.post { cameraPreviewHelper.bindCameraUseCases() }
+            bindCameraUseCases()
         } else {
             ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.CAMERA), REQUEST_CAMERA_PERMISSION)
         }
-
-        viewFinder.post {
-            cameraPreviewHelper.bindCameraUseCases()
-        }
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        // Request camera permissions
+    override fun onResume() {
+        super.onResume()
+        qrCodeAnalyzer.callback = this
+    }
 
+    override fun onPause() {
+        qrCodeAnalyzer.callback = null
+        super.onPause()
+    }
+
+    override fun onQrCodeFounded(barcode: FirebaseVisionBarcode) {
+        Timber.i("barcode = ${barcode.rawValue}")
+    }
+
+    override fun onQrCodeNotFounded() {
+    }
+
+    override fun onQrCodeError(error: Exception) {
     }
 
     private fun isCameraPermissionGranted(): Boolean {
@@ -81,12 +68,16 @@ class ReadingQRCodeFragment: Fragment() {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         if (requestCode == REQUEST_CAMERA_PERMISSION) {
             if (isCameraPermissionGranted()) {
-                viewFinder.post { cameraPreviewHelper.bindCameraUseCases() }
+                bindCameraUseCases()
             } else {
                 Toast.makeText(requireContext(), "Camera permission is required.", Toast.LENGTH_SHORT).show()
                 activity?.onBackPressed()
             }
         }
+    }
+
+    private fun bindCameraUseCases() {
+        viewFinder.post { cameraPreviewHelper.bindCameraUseCases(viewLifecycleOwner, viewFinder) }
     }
 
     companion object {

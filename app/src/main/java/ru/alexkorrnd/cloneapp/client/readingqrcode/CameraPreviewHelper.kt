@@ -1,57 +1,46 @@
 package ru.alexkorrnd.cloneapp.client.readingqrcode
 
 import android.util.DisplayMetrics
-import android.util.Log
-import android.widget.ImageView
-import androidx.camera.core.*
+import androidx.camera.core.AspectRatio
+import androidx.camera.core.Camera
+import androidx.camera.core.CameraSelector
+import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
+import timber.log.Timber
 import java.util.concurrent.Executor
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 
 class CameraPreviewHelper(
-    private val lifecycleOwner: LifecycleOwner,
-    private val previewView: PreviewView,
-    private val overlayView: ImageView,
-    private val qrCodeCallback: QrCodeImageAnalysis.QrReaderCallback
+    private val qrCodeImageAnalysisFabric: QrCodeImageAnalysisFabric
 ) {
 
     private var camera: Camera? = null
     private var lensFacing: Int = CameraSelector.LENS_FACING_BACK
 
-    private var imageAnalyzer: ImageAnalysis? = null
-
-    private val mainExecutor: Executor = ContextCompat.getMainExecutor(previewView.context)
-
-    fun bindCameraUseCases() {
+    fun bindCameraUseCases(
+        lifecycleOwner: LifecycleOwner,
+        previewView: PreviewView
+    ) {
         val metrics = DisplayMetrics().also { previewView.display.getRealMetrics(it) }
         val screenAspectRatio = aspectRatio(metrics.widthPixels, metrics.heightPixels)
-
         val rotation = previewView.display.rotation
 
         val cameraProviderFuture = ProcessCameraProvider.getInstance(previewView.context)
+        val mainExecutor: Executor = ContextCompat.getMainExecutor(previewView.context)
         cameraProviderFuture.addListener(Runnable {
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
 
-            val preview = Preview.Builder()
-                .setTargetAspectRatio(screenAspectRatio)
-                .setTargetRotation(rotation)
-                .build()
-
+            val preview = setupPreview(screenAspectRatio, rotation)
             preview.setSurfaceProvider(previewView.previewSurfaceProvider)
 
-            imageAnalyzer = QrCodeImageAnalysis().apply {
-                rectangleAreaHighliteHelper = RectangleAreaHighliteHelper(overlayView)
-                callback = qrCodeCallback
-            }.createQrCodeImageAnalysis(screenAspectRatio, rotation)
+            val imageAnalyzer = qrCodeImageAnalysisFabric.create(screenAspectRatio, rotation)
 
-            val cameraSelector = CameraSelector.Builder()
-                .requireLensFacing(lensFacing)
-                .build()
+            val cameraSelector = setupCameraSelector()
 
             cameraProvider.unbindAll()
 
@@ -59,10 +48,26 @@ class CameraPreviewHelper(
                 camera = cameraProvider.bindToLifecycle(
                     lifecycleOwner, cameraSelector, preview, imageAnalyzer
                 )
-            } catch(exc: Exception) {
-                Log.e(TAG, "Use case binding failed", exc)
+            } catch (exc: Exception) {
+                Timber.e(exc, "Use case binding failed")
             }
         }, mainExecutor)
+    }
+
+    private fun setupPreview(
+        screenAspectRatio: Int,
+        rotation: Int
+    ): Preview {
+        return Preview.Builder()
+            .setTargetAspectRatio(screenAspectRatio)
+            .setTargetRotation(rotation)
+            .build()
+    }
+
+    private fun setupCameraSelector(): CameraSelector {
+        return CameraSelector.Builder()
+            .requireLensFacing(lensFacing)
+            .build()
     }
 
     private fun aspectRatio(width: Int, height: Int): Int {
