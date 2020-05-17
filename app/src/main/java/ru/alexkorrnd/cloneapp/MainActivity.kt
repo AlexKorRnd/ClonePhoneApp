@@ -1,49 +1,24 @@
 package ru.alexkorrnd.cloneapp
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.IntentFilter
-import android.net.wifi.p2p.WifiP2pManager
 import android.os.Bundle
-import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import org.koin.android.ext.android.getKoin
+import org.koin.android.ext.android.inject
 import ru.alexkorrnd.cloneapp.client.readingqrcode.ReadingQRCodeFragment
 import ru.alexkorrnd.cloneapp.generatingqrcode.ShowQrCodeFragment
 import ru.alexkorrnd.cloneapp.wifi.WiFiDirectBroadcastReceiver
-import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
 
-    private val intentFilter = IntentFilter()
+    val intentFilter : IntentFilter by inject()
 
-    private lateinit var channel: WifiP2pManager.Channel
-    private lateinit var manager: WifiP2pManager
-
-    private var receiver: WiFiDirectBroadcastReceiver? = null
+    val receiver: WiFiDirectBroadcastReceiver by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        // Indicates a change in the Wi-Fi P2P status.
-        intentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION)
-
-        // Indicates a change in the list of available peers.
-        intentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION)
-
-        // Indicates the state of Wi-Fi P2P connectivity has changed.
-        intentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION)
-
-        // Indicates this device's details have changed.
-        intentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION)
-
-        manager = getSystemService(Context.WIFI_P2P_SERVICE) as WifiP2pManager
-        channel = manager.initialize(this.applicationContext, Looper.getMainLooper(), WifiP2pManager.ChannelListener {
-            Timber.tag("WiFiDirectBroadcastReceiver")
-            Timber.e("onChannelDisconnected!!!!!!!")
-        })
 
         if (!LocationPermissionController.checkGrantedLocationPermission(this)) {
             LocationPermissionController.requestLocationPermission(this, REQUEST_PERMISSION)
@@ -61,17 +36,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    /** register the BroadcastReceiver with the intent values to be matched  */
     public override fun onResume() {
         super.onResume()
-        receiver = WiFiDirectBroadcastReceiver(
-            this,
-            manager,
-            channel,
-            getKoin().get()
-        )
         registerReceiver(receiver, intentFilter)
-
     }
 
     public override fun onPause() {
