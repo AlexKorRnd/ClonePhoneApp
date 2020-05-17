@@ -9,8 +9,8 @@ import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.getKoin
+import ru.alexkorrnd.cloneapp.client.readingqrcode.ReadingQRCodeFragment
 import ru.alexkorrnd.cloneapp.generatingqrcode.ShowQrCodeFragment
-import ru.alexkorrnd.cloneapp.readingqrcode.ReadingQRCodeFragment
 import ru.alexkorrnd.cloneapp.wifi.WiFiDirectBroadcastReceiver
 import timber.log.Timber
 

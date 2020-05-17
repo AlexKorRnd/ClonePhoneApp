@@ -1,4 +1,4 @@
-package ru.alexkorrnd.cloneapp.readingqrcode
+package ru.alexkorrnd.cloneapp.client.readingqrcode
 
 import android.util.Size
 import androidx.camera.core.ImageAnalysis
