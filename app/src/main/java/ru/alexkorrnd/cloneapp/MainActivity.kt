@@ -8,6 +8,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.inject
 import org.koin.core.qualifier.named
 import ru.alexkorrnd.cloneapp.client.readingqrcode.ReadingQRCodeFragment
+import ru.alexkorrnd.cloneapp.common.Router
 import ru.alexkorrnd.cloneapp.di.WIFI_BROADCAST_RECEIVER_INTENT_FILTER_QUALIFIER
 import ru.alexkorrnd.cloneapp.generatingqrcode.ShowQrCodeFragment
 import ru.alexkorrnd.cloneapp.wifi.WiFiDirectBroadcastReceiver
@@ -18,6 +19,8 @@ class MainActivity : AppCompatActivity() {
 
     val receiver: WiFiDirectBroadcastReceiver by inject()
 
+    lateinit var router: Router
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -25,6 +28,11 @@ class MainActivity : AppCompatActivity() {
         if (!LocationPermissionController.checkGrantedLocationPermission(this)) {
             LocationPermissionController.requestLocationPermission(this, REQUEST_PERMISSION)
         }
+
+        router = Router(
+            fragmentManager = supportFragmentManager,
+            containerResId = R.id.fragmentContainer
+        )
 
         showQrCode.setOnClickListener {
             supportFragmentManager.beginTransaction()

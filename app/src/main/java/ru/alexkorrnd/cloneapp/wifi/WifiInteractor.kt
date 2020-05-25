@@ -14,6 +14,9 @@ class WifiInteractor(
                 eventManager.sendEvent(WiFiEvent.DeviceInfoChanged(deviceInfo))
                 deviceInfoSaver.save(deviceInfo.toWifiDeviceInfo())
             }
+            is WiFiEvent.PeersChanged -> {
+                eventManager.sendEvent(WiFiEvent.PeersChanged())
+            }
         }
     }
 

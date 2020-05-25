@@ -13,7 +13,9 @@ import androidx.fragment.app.Fragment
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode
 import kotlinx.android.synthetic.main.fragment_reading_qr_code.*
 import org.koin.android.ext.android.inject
+import ru.alexkorrnd.cloneapp.MainActivity
 import ru.alexkorrnd.cloneapp.R
+import ru.alexkorrnd.cloneapp.client.connect.view.ConnectionFragment
 import ru.alexkorrnd.cloneapp.client.readingqrcode.view.QrReaderCallback
 import timber.log.Timber
 
@@ -52,6 +54,7 @@ class ReadingQRCodeFragment: Fragment(), QrReaderCallback {
 
     override fun onQrCodeFounded(barcode: FirebaseVisionBarcode) {
         Timber.i("barcode = ${barcode.rawValue}")
+        (activity as MainActivity).router.replace(ConnectionFragment.newInstance(barcode.rawValue!!))
     }
 
     override fun onQrCodeNotFounded() {

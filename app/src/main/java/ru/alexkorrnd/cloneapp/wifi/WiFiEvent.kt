@@ -6,4 +6,6 @@ sealed class WiFiEvent {
 
     class DeviceInfoChanged(val wifiP2pDevice: WifiP2pDevice): WiFiEvent()
 
+    class PeersChanged(): WiFiEvent()
+
 }

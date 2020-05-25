@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_show_qrcode.*
-import org.koin.android.scope.lifecycleScope
+import org.koin.androidx.scope.lifecycleScope
 import org.koin.core.parameter.parametersOf
 import ru.alexkorrnd.cloneapp.R
 import ru.alexkorrnd.cloneapp.generatingqrcode.data.QrCodeView

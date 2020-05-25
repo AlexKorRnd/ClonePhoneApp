@@ -1,5 +1,6 @@
 package ru.alexkorrnd.cloneapp.di
 
+import ru.alexkorrnd.cloneapp.client.connect.di.connectionModule
 import ru.alexkorrnd.cloneapp.client.readingqrcode.di.qrCodeReaderModule
 
 val modulesList = listOf(
@@ -9,5 +10,6 @@ val modulesList = listOf(
     converterModule,
     mainActivityModule,
     showQRCodeModule,
-    qrCodeReaderModule
+    qrCodeReaderModule,
+    connectionModule
 )
